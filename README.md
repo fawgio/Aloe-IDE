@@ -1,6 +1,8 @@
 # Aloe IDE
+ ![GitHub Release](https://img.shields.io/github/v/release/fawgio/Aloe-IDE) <br>
  ![icon](icon.gif)
- This is an IDE for 11l development.
+ This is a repository of Aloe IDE. An IDE for 11l development. <br>
+ ![screen](example.PNG)
 ## Features
  - Code editing and syntax highlight
  - Autocomplete
@@ -85,6 +87,6 @@ public class LightTheme implements AloePlugin, AloeTheme {
 }
 ```
 To compile your plugin use ```javac YourPlugin.java```
-See [api-docs]() for all info
+See [api]() for more info
 ### Usage
  All plugins must store in the plugins folder and Aloe will load and run them on start
