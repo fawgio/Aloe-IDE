@@ -19,7 +19,8 @@ public class JFileTree extends JTree {
                     getLastSelectedPathComponent();
             if (node == null) return;
             File nodeInfo = ((FileNode) node.getUserObject()).getFile();
-            Aloe.mainWindow.showFile(nodeInfo);
+            if (nodeInfo.isFile())
+                Aloe.mainWindow.showFile(nodeInfo);
         });
 
         //Icons

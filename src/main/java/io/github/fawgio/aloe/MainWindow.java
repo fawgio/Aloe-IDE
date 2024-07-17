@@ -3,14 +3,11 @@ package io.github.fawgio.aloe;
 import io.github.fawgio.aloe.highlight.SyntaxHighlighter;
 
 import javax.swing.*;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
@@ -94,6 +91,7 @@ public class MainWindow extends JFrame implements WindowListener {
             if (codeTabs.getTabCount() > 0) {
                 for (Component codePane :
                         codeTabs.getComponents()) {
+                    if(codePane instanceof JCodePane)
                     ((JCodePane) codePane).isSelected(codeTabs.indexOfComponent(codePane) == codeTabs.getSelectedIndex());
                 }
                 current = new File(codeTabs.getSelectedComponent().getName());
@@ -588,7 +586,33 @@ public class MainWindow extends JFrame implements WindowListener {
     public void showFile(File file) {
         current = file;
         try {
-            codeTabs.addTab(file.getPath(), new JCodePane(file.getName().endsWith(".11l"), Files.readString(file.toPath())).setCaption(file.getPath()).isSelected(true));
+            codeTabs.addTab(file.getName(), new JCodePane(file.getName().endsWith(".11l"), Files.readString(file.toPath())).setCaption(file.getPath()).isSelected(true));
+            //Choose icon based on type of file
+            Icon icon = new ImageIcon();
+            if(file.getName().endsWith(".11l"))
+                icon = new ImageIcon("file11l.png");
+            else if(file.getName().endsWith(".cpp"))
+                icon = new ImageIcon("filecpp.png");
+            else
+                icon = new ImageIcon("file.png");
+
+            int index = codeTabs.getTabCount()-1;
+
+            //Create tabComponent with tabTitle, exitButton and icon
+            JPanel tabComponent = new JPanel(new GridBagLayout());
+            tabComponent.setOpaque(false);
+            JLabel tabTitle = new JLabel(file.getName());
+            JButton exitButton = new JButton("X");
+            exitButton.setBorder(BorderFactory.createEmptyBorder(2,5,0,0));
+            exitButton.setBorderPainted(false);
+            exitButton.setOpaque(false);
+            exitButton.addActionListener(e -> {if (codeTabs.getSelectedComponent() != null) codeTabs.remove(codeTabs.getSelectedComponent());});
+            GridBagConstraints constraints = new GridBagConstraints();
+            tabComponent.add(new JLabel(icon),constraints);
+            tabComponent.add(tabTitle, constraints);
+            tabComponent.add(exitButton, constraints);
+
+            codeTabs.setTabComponentAt(index, tabComponent);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
