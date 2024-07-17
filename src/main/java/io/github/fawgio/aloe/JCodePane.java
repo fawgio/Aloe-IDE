@@ -58,6 +58,7 @@ public class JCodePane extends JScrollPane implements KeyListener {
         code.getDocument().addUndoableEditListener(nHistory);
         code.setFont(new Font(MainWindow.font, Font.PLAIN, 15));
         code.setForeground(MainWindow.fore);
+        code.setCaretColor(MainWindow.fore);
         setViewportView(code);
         setBg(Aloe.mainWindow.back);
         lines.setFont(new Font(MainWindow.font, Font.ITALIC, 15));

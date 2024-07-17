@@ -18,7 +18,7 @@
 ## Plugins 
 ### Creating
 You can create your own plugins for Aloe IDE! Just create a Java class that implements ```AloePlugin``` and download latest
-Aloe API from releases. Then override method ```start()```. Aloe IDE calls thi method when it is starting.
+Aloe API from releases. Then override method ```start()```. Aloe IDE is calling this method when it starts.
 #### ```AloeTheme```
 ```AloeTheme``` is an interface that allow you to create themes. You have to implement 4 methods: 
 ``` 
@@ -87,6 +87,6 @@ public class LightTheme implements AloePlugin, AloeTheme {
 }
 ```
 To compile your plugin use ```javac YourPlugin.java```
-See [api]() for more info
+See [api]() for examples
 ### Usage
  All plugins must store in the plugins folder and Aloe will load and run them on start
