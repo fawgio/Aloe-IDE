@@ -162,11 +162,11 @@ public class MainWindow extends JFrame implements WindowListener {
             JPanel aloeP = new JPanel();
             aloeP.add(new JLabel("<html><h1><font color=green size=15>Aloe</font> IDE</h1></html>"));
             aloeP.add(new JLabel("Alexander Boolba"));
-            aloeP.add(new JLabel("(ↄ) 2024 All lefts reversed"));
+            aloeP.add(new JLabel("Copyleft 2024 All lefts reversed"));
             aloeP.add(new JLabel("Version: "+version));
             JPanel elevenLp = new JPanel();
             elevenLp.add(new JLabel("<html><h1><font face=\"Courier New\" size=15>11l</font></h1></html>"));
-            elevenLp.add(new JLabel("© 2018-2020 Alexander Tretyak"));
+            elevenLp.add(new JLabel("Copyright 2018 Alexander Tretyak"));
             elevenLp.add(new JLabel("Version: 2024.4"));
             about.add(aloeP);
             about.add(elevenLp);
