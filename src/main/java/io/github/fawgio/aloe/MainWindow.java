@@ -25,6 +25,7 @@ import java.util.Collections;
  */
 public class MainWindow extends JFrame implements WindowListener {
     public static final JLabel CONSOLE_LABEL = new JLabel("Console");
+    private static final String version = "1.0.0.0-beta";
     public static String font;
     public static final Font NORMAL_FONT = new Font(font, Font.PLAIN, 15);
     private static String lastChanged;
@@ -162,7 +163,7 @@ public class MainWindow extends JFrame implements WindowListener {
             aloeP.add(new JLabel("<html><h1><font color=green size=15>Aloe</font> IDE</h1></html>"));
             aloeP.add(new JLabel("Alexander Boolba"));
             aloeP.add(new JLabel("(ↄ) 2024 All lefts reversed"));
-            aloeP.add(new JLabel("Version: 1.0.0-beta"));
+            aloeP.add(new JLabel("Version: "+version));
             JPanel elevenLp = new JPanel();
             elevenLp.add(new JLabel("<html><h1><font face=\"Courier New\" size=15>11l</font></h1></html>"));
             elevenLp.add(new JLabel("© 2018-2020 Alexander Tretyak"));
@@ -210,7 +211,7 @@ public class MainWindow extends JFrame implements WindowListener {
     }
 
     MainWindow() {
-        super("Aloe IDE");
+        super("Aloe IDE ("+version+")");
         fileMenu.add(newFile);
         fileMenu.add(openFile);
         newFile.add(newProjectFile);
