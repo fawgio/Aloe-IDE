@@ -3,6 +3,8 @@ package io.github.fawgio.aloe;
 import io.github.fawgio.aloe.highlight.SyntaxHighlighter;
 
 import javax.swing.*;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.SimpleAttributeSet;
@@ -28,7 +30,7 @@ public class MainWindow extends JFrame implements WindowListener {
     private static String lastChanged;
     public static Color fore;
     public static int theme;
-    static JTree projectTree = new JTree();
+    static JFileTree projectTree = new JFileTree();
     static JPanel mainContent = new JPanel(new BorderLayout());
     public static JTabbedPane codeTabs = new JTabbedPane();
     public static JMenuBar menu = new JMenuBar();
@@ -265,8 +267,8 @@ public class MainWindow extends JFrame implements WindowListener {
     }
 
     /**
-     * Executes an 11l program, analyze input written by user and send it to program
-     * @param executable an 11l program
+     * Executes a 11l program, analyze input written by user and send it to program
+     * @param executable a 11l program
      */
     public void exec(File executable) {
         try {
@@ -532,51 +534,12 @@ public class MainWindow extends JFrame implements WindowListener {
 
     public void setProject(File dir) {
         if (dir.exists() && dir.isDirectory()) {
-            root = new DefaultMutableTreeNode(dir.getPath());
-            var selected = projectTree.getSelectionPath();
-            projectTree.setModel(new DefaultTreeModel(root, false));
-            listFiles(dir,root);
-            if (selected != null)
-                projectTree.expandPath(selected);
+            projectTree.setModelFromFile(dir);
             projectTree.setExpandsSelectedPaths(true);
-            projectTree.addSelectionPath(selected);
-            projectTree.scrollPathToVisible(selected);
-            projectTree.repaint();
-            projectTree.updateUI();
             project = dir;
         }
         if(isVisible())
             setVisible(true); // Update the window
-    }
-
-    private void listFiles(File dir, DefaultMutableTreeNode parent){
-        for (File file :
-                dir.listFiles()) {
-            parent.add(file(file));
-        }
-    }
-
-    private DefaultMutableTreeNode file(File file) {
-        DefaultMutableTreeNode node = new DefaultMutableTreeNode(file.getName());
-        if(file.isFile()) {
-            projectTree.addMouseListener(new MouseAdapter(){
-                @Override
-                public void mouseClicked(MouseEvent e){
-                    try {
-                        if(projectTree.getLastSelectedPathComponent() == node) {
-                            current = file;
-                            codeTabs.addTab(file.getPath(), new JCodePane(file.getName().endsWith(".11l"),Files.readString(file.toPath())).setCaption(file.getPath()).isSelected(true));
-                            codeTabs.setSelectedIndex(codeTabs.getTabCount()-1);
-                        }
-                    } catch (IOException ioException) {
-                        ioException.printStackTrace();
-                    }
-                }
-            });
-        } else {
-            listFiles(file,node);
-        }
-        return node;
     }
 
     void createProject() {
@@ -619,5 +582,15 @@ public class MainWindow extends JFrame implements WindowListener {
             ((JCodePane)component).setBg(color);
             ((JCodePane)component).highlight();
         }
+    }
+
+    public void showFile(File file) {
+        current = file;
+        try {
+            codeTabs.addTab(file.getPath(), new JCodePane(file.getName().endsWith(".11l"), Files.readString(file.toPath())).setCaption(file.getPath()).isSelected(true));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        codeTabs.setSelectedIndex(codeTabs.getTabCount() - 1);
     }
 }
