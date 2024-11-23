@@ -4,8 +4,16 @@ import javax.swing.*;
 import javax.swing.tree.*;
 import java.awt.*;
 import java.io.File;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class JFileTree extends JTree {
+    private File root;
+    private Date last;
     Icon folderIcon = new ImageIcon("folder.png");
     Icon folderOpenIcon = new ImageIcon("folderOpen.png");
     Icon fileIcon = new ImageIcon("file.png");
@@ -24,12 +32,11 @@ public class JFileTree extends JTree {
         });
 
         //Icons
-
-        //DefaultTreeCellRenderer renderer = (DefaultTreeCellRenderer) getCellRenderer();
-
-        //renderer.setClosedIcon(folderIcon);
-        //renderer.setLeafIcon(fileIcon);
         setCellRenderer(new Renderer());
+    }
+
+    public File getRoot() {
+        return root;
     }
 
     private class Renderer extends DefaultTreeCellRenderer{
@@ -76,6 +83,17 @@ public class JFileTree extends JTree {
     }
 
     public void setModelFromFile(File file){
+        root = file;
         setModel(new DefaultTreeModel(getFiles(file, true)));
+    }
+
+    public static Date getLastModified(File directory) {
+        File[] files = directory.listFiles();
+        if (files.length == 0) return new Date(directory.lastModified());
+        Arrays.sort(files, new Comparator<File>() {
+            public int compare(File o1, File o2) {
+                return (int) Math.max((o2.lastModified()),(o1.lastModified()));
+            }});
+        return new Date(files[0].lastModified());
     }
 }

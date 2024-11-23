@@ -97,6 +97,7 @@ public class JCodePane extends JScrollPane implements KeyListener {
                         ioException.printStackTrace();
                     }
                 }
+                MainWindow.projectTree.setModelFromFile(MainWindow.projectTree.getRoot());
             }
         });
         rename.addActionListener(new AbstractAction() {
@@ -105,6 +106,7 @@ public class JCodePane extends JScrollPane implements KeyListener {
                 var name = JOptionPane.showInputDialog("Rename to");
                 if (name!=null)
                     MainWindow.current.renameTo(new File(MainWindow.current.getPath().replace(MainWindow.current.getName(), name)));
+                MainWindow.projectTree.setModelFromFile(MainWindow.projectTree.getRoot());
             }
         });
         jPopupMenu.addSeparator();

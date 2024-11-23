@@ -137,6 +137,7 @@ public class MainWindow extends JFrame implements WindowListener {
             try {
                 String file = project.getPath() + System.getProperty("file.separator") + JOptionPane.showInputDialog("New Folder");
                 Files.createDirectory(Path.of(file));
+                projectTree.setModelFromFile(projectTree.getRoot());
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
@@ -149,11 +150,14 @@ public class MainWindow extends JFrame implements WindowListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Aloe.mainWindow.compilerStart("",false);
+                projectTree.setModelFromFile(projectTree.getRoot());
             }
         });
         buildRun.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F9,InputEvent.SHIFT_MASK));
-        execRun.addActionListener(e -> Aloe.mainWindow.exec(new File(current.getParent()+System.getProperty("file.separator")+
-                current.getName().split("\\.")[0] + (System.getProperty("os.name").startsWith("Windows")?".exe":""))));
+        execRun.addActionListener(e -> { Aloe.mainWindow.exec(new File(current.getParent()+System.getProperty("file.separator")+
+                current.getName().split("\\.")[0] + (System.getProperty("os.name").startsWith("Windows")?".exe":"")));
+                projectTree.setModelFromFile(projectTree.getRoot());
+        });
         execRun.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F9,InputEvent.CTRL_MASK));
         aboutHelp.addActionListener(e -> {
             JDialog about = new JDialog();
@@ -325,6 +329,7 @@ public class MainWindow extends JFrame implements WindowListener {
         try {
             String file = project.getPath() + System.getProperty("file.separator") + JOptionPane.showInputDialog("New File");
             Files.createFile(Path.of(file));
+            projectTree.setModelFromFile(projectTree.getRoot());
         } catch (IOException ioException) {
             ioException.printStackTrace();
         }
@@ -547,17 +552,13 @@ public class MainWindow extends JFrame implements WindowListener {
         j.setDialogTitle("Set directory of your project");
         j.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         int res = j.showOpenDialog(null);
-        try {
-            if (res == JFileChooser.APPROVE_OPTION) {
-                mw.setProject(j.getSelectedFile());
-                Files.createFile(Path.of(project.getPath() + System.getProperty("file.separator") + JOptionPane.showInputDialog("The First 11l Module")));
-                mw.elevenL = elevenL;
-                mw.setVisible(true);
-                Aloe.mainWindow = mw;
-                this.dispose();
-            }
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
+        if (res == JFileChooser.APPROVE_OPTION) {
+            mw.setProject(j.getSelectedFile());
+            newFile();
+            mw.elevenL = elevenL;
+            mw.setVisible(true);
+            Aloe.mainWindow = mw;
+            this.dispose();
         }
     }
 

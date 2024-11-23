@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * JButton that can open JFileChooser dialog
+ * JButton that open JFileChooser dialog
  */
 public class JFileButton extends JButton {
     private final List<ApprovedListener> approvedListeners = new ArrayList<>();

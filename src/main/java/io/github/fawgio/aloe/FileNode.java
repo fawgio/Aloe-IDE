@@ -19,6 +19,6 @@ public class FileNode {
     }
 
     public String toString(){
-        return isRoot ? file.getAbsolutePath().substring(file.getAbsolutePath().lastIndexOf("\\")+1) + " ( " + file.getAbsolutePath() + " )" : file.getAbsolutePath().substring(file.getAbsolutePath().lastIndexOf("\\")+1);
+        return file.getAbsolutePath().substring(file.getAbsolutePath().lastIndexOf("\\")+1) + (isRoot ? " ( " + file.getAbsolutePath() + " )" : "");
     }
 }
